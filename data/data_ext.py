@@ -31,5 +31,3 @@ for class_name in os.listdir(src_dir):
             src_path = os.path.join(class_src, img)
             dst_path = os.path.join(class_dst, img)
             shutil.copy(src_path, dst_path)
-
-print("✅ Extraction completed: 10 images per class copied to", dst_dir)

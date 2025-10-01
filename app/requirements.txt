@@ -1,8 +1,0 @@
-tensorflow
-opencv-python
-matplotlib
-seaborn
-scikit-learn
-numpy
-pandas
-streamlit  # or fastapi uvicorn if going API route
