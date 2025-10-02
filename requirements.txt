@@ -1,8 +1,6 @@
-tensorflow
-opencv-python
-numpy
-pandas
-uvicorn
 fastapi
-Pillow
+uvicorn
 python-multipart
+tflite-runtime
+numpy
+Pillow

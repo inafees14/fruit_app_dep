@@ -1,0 +1,11 @@
+Strawberry
+apple
+banana
+cantaloupe
+cherry
+grape
+kiwifruit
+mango
+orange
+pineapple
+watermelon
