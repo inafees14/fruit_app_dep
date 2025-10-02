@@ -3,7 +3,7 @@ import os
 # from src.utils import load_trained_model, load_class_names, preprocess_image # ❌ REMOVED - We will define functions here
 import numpy as np # ✅ ADDED
 from PIL import Image # ✅ ADDED
-import tensorflow.lite as tflite
+import tflite_runtime.interpreter as tflite
 
 # --- Configuration (✅ CHANGED) ---
 MODEL_PATH = os.path.join("checkpoints", "model.tflite") # ✅ Use the new .tflite model
