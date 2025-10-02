@@ -34,8 +34,6 @@ async def predict(file: UploadFile = File(...)):
         ]
     }
 
-
-
 # -----------------------
 # Serve frontend (index.html)
 # -----------------------
