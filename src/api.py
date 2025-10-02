@@ -12,9 +12,10 @@ app = FastAPI()
 UPLOAD_DIR = "uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
-@app.get("/")
-def home():
-    return {"message": "Fruit classification API is running!"}
+@app.get("/", response_class=HTMLResponse)
+def home(request: Request):
+    """Serves the new beautiful homepage."""
+    return templates.TemplateResponse("home.html", {"request": request})
 
 @app.post("/predict/")
 async def predict(file: UploadFile = File(...)):
