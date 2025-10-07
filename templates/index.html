@@ -52,7 +52,10 @@
             <h1>Prediction Result</h1>
             <div class="card result-page">
                 <img id="result-image" />
-                <h2></h2> <p class="probability"></p> <div class="fun-fact"><p></p></div> <button id="reset-btn">Predict Another Fruit</button>
+                <h2></h2> 
+                <p class="probability"></p> 
+                <div class="fun-fact"><p></p></div> 
+                <button id="reset-btn">Predict Another Fruit</button>
             </div>
         </div>
     </div>
@@ -86,7 +89,6 @@
 
         let allFacts = {};
 
-        // --- CORRECTED: Load Fun Facts on page load ---
         document.addEventListener("DOMContentLoaded", async () => {
             try {
                 const response = await fetch("/facts");
@@ -97,7 +99,6 @@
             }
         });
 
-        // --- Show preview when a file is chosen ---
         fileInput.addEventListener("change", () => {
             const file = fileInput.files[0];
             if (file) {
@@ -107,7 +108,6 @@
             }
         });
 
-        // --- Handle the form submission to get a prediction ---
         form.addEventListener("submit", async (e) => {
             e.preventDefault();
             const file = fileInput.files[0];
@@ -122,25 +122,36 @@
             const response = await fetch("/predict/", { method: "POST", body: formData });
             const data = await response.json();
 
-            // --- NEW: Logic to show only the top prediction and a fun fact ---
+            // ✅ --- NEW LOGIC STARTS HERE --- ✅
             const topPrediction = data.predictions[0];
             const fruitName = topPrediction.class;
             const probability = topPrediction.probability;
-            const factsForFruit = allFacts[fruitName] || allFacts["default"];
-            const randomFact = factsForFruit[Math.floor(Math.random() * factsForFruit.length)];
 
-            // --- Populate and show the result page ---
+            // Check if the API returned our special "Not a Fruit!" class
+            if (fruitName === "Not a Fruit!") {
+                resultHeader.innerText = "Hmm... 🤔";
+                resultProb.innerText = "I'm not sure this is one of the fruits I know.";
+                // Use a default fact as you requested
+                const defaultFacts = allFacts["default"] || ["Please try another image."];
+                resultFact.innerText = defaultFacts[Math.floor(Math.random() * defaultFacts.length)];
+            } else {
+                // This is the original logic for a successful prediction
+                const factsForFruit = allFacts[fruitName] || allFacts["default"];
+                const randomFact = factsForFruit[Math.floor(Math.random() * factsForFruit.length)];
+                
+                resultHeader.innerText = fruitName;
+                resultProb.innerText = `Confidence: ${Number(probability).toFixed(2)}%`;
+                resultFact.innerText = randomFact;
+            }
+            // ✅ --- NEW LOGIC ENDS HERE --- ✅
+
             resultImage.src = URL.createObjectURL(file);
             resultImage.style.display = "block";
-            resultHeader.innerText = fruitName;
-            resultProb.innerText = `Confidence: ${Number(probability).toFixed(2)}%`;
-            resultFact.innerText = randomFact;
             
             uploadPage.style.display = "none";
             resultPage.style.display = "block";
         });
 
-        // --- Handle the "Predict Another" button ---
         resetBtn.addEventListener("click", () => {
             resultPage.style.display = "none";
             uploadPage.style.display = "block";

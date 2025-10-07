@@ -25,23 +25,34 @@ async def predict(file: UploadFile = File(...)):
         shutil.copyfileobj(file.file, buffer)
 
     # Run prediction
-    predictions, _ = predict_image(file_path)   # ignore img
-    os.remove(file_path)  # Delete file after prediction
+    predictions, _ = predict_image(file_path)
+    os.remove(file_path)
 
+    # ✅ --- NEW LOGIC STARTS HERE --- ✅
+    CONFIDENCE_THRESHOLD = 50.0  # You can adjust this value (e.g., 75.0, 80.0)
+
+    final_predictions = []
+    if predictions:
+        top_class, top_prob = predictions[0]
+
+        # Check if the top prediction is below our confidence threshold
+        if top_prob < CONFIDENCE_THRESHOLD:
+            final_predictions.append({"class": "Not a Fruit!", "probability": top_prob})
+        else:
+            # If confidence is high enough, just return the top prediction
+            final_predictions.append({"class": top_class, "probability": top_prob})
+    # ✅ --- NEW LOGIC ENDS HERE --- ✅
+    
     return {
         "filename": file.filename,
-        "predictions": [
-            {"class": cls, "probability": prob} for cls, prob in predictions
-        ]
+        "predictions": final_predictions # Return our carefully checked prediction
     }
+
 @app.get("/facts", response_class=FileResponse)
 async def get_facts():
     """Serves the facts.json file."""
     return "templates/facts.json"
     
-# -----------------------
-# Serve frontend (index.html)
-# -----------------------
 templates = Jinja2Templates(directory="templates")
 
 @app.get("/upload", response_class=HTMLResponse)
