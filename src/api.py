@@ -6,6 +6,7 @@ from .predict import predict_image
 from fastapi.templating import Jinja2Templates 
 from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.requests import Request
+from . import drive_utils
 
 app = FastAPI()
 
@@ -47,6 +48,19 @@ async def predict(file: UploadFile = File(...)):
         "filename": file.filename,
         "predictions": final_predictions # Return our carefully checked prediction
     }
+
+    # ✅ --- UPLOAD TO GOOGLE DRIVE --- ✅
+    try:
+        service = drive_utils.authenticate()
+        dest_folder_id = drive_utils.find_or_create_folder(service, predicted_class_for_upload)
+        drive_utils.upload_image(service, file_path, file.filename, dest_folder_id)
+    except Exception as e:
+        print(f"Error uploading to Google Drive: {e}")
+    # --- END OF UPLOAD LOGIC ---
+    
+    os.remove(file_path) # Clean up the local file
+
+    return {"filename": file.filename, "predictions": final_predictions}
 
 @app.get("/facts", response_class=FileResponse)
 async def get_facts():
