@@ -136,7 +136,9 @@
                 resultFact.innerText = defaultFacts[Math.floor(Math.random() * defaultFacts.length)];
             } else {
                 // This is the original logic for a successful prediction
-                const factsForFruit = allFacts[fruitName] || allFacts["default"];
+                // Find the correct key from our facts, ignoring case (e.g., "apple" now matches "Apple")
+                const key = Object.keys(allFacts).find(k => k.toLowerCase() === fruitName.toLowerCase().trim());
+                const factsForFruit = allFacts[key] || allFacts["default"];
                 const randomFact = factsForFruit[Math.floor(Math.random() * factsForFruit.length)];
                 
                 resultHeader.innerText = fruitName;
