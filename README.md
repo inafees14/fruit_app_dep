@@ -53,3 +53,67 @@ The primary goal is to develop an accurate and lightweight fruit classification 
 
 ## 📂 Web App Project Structure
 
+fruit-classification-app/
+│
+├── src/
+│   ├── api.py           # FastAPI application logic
+│   └── predict.py       # Model loading and prediction function
+│
+├── templates/
+│   ├── home.html        # The homepage
+│   ├── index.html       # The prediction page
+│   └── facts.json       # Fun facts for each fruit
+│
+├── Procfile             # Command to run the app on Heroku
+├── requirements.txt     # Python dependencies
+├── runtime.txt          # Python version for Heroku
+└── README.md            # This file
+
+## 📜 Version History (Heroku Releases)
+
+This table highlights the key milestones of the deployment.
+
+| Version | Date       | Key Changes (Commit Message)                         |
+|---------|------------|------------------------------------------------------|
+| `v13`   | 2025-10-07 | Fix: Case-sensitive bug for fun facts lookup         |
+| `v12`   | 2025-10-07 | Feat: Add probability threshold for unknown images   |
+| `v11`   | 2025-10-07 | Feat: Implement fun facts for each fruit class       |
+| `v8`    | 2025-10-02 | Feat: Deploy two-page UI (Home + Predict)            |
+| `v1`    | 2025-10-01 | Initial deployment of Fruit Classifier app           |
+
+## 🚀 Local Development Setup
+
+To run this web application on your local machine:
+
+1.  **Clone the repository:**
+    ```bash
+    git clone <your-repo-url>
+    cd fruit-classification-app
+    ```
+2.  **Install dependencies:**
+    ```bash
+    pip install -r requirements.txt
+    ```
+3.  **Run the FastAPI server:**
+    ```bash
+    uvicorn src.api:app --reload
+    ```
+4.  Open your browser and navigate to `http://127.0.0.1:8000`.
+
+## 🧠 Model Training Details
+
+The model was trained separately. The training repository contains scripts and data used to generate the final `model.h5` file.
+
+-   **Dataset**: ~31,000 images across 11 fruit categories, sourced from Kaggle and free stock image websites.
+-   **Training Strategy**: Transfer learning with a frozen MobileNetV2 base, a custom classification head, and data augmentation.
+
+## 📈 Future Improvements
+
+-   Implement model quantization for further size reduction.
+-   Add real-time classification via webcam.
+-   Expand the dataset to include more fruit varieties.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
