@@ -53,21 +53,22 @@ The primary goal is to develop an accurate and lightweight fruit classification 
 
 ## 📂 Web App Project Structure
 
-fruit-classification-app/
+fruit-classification/
 │
-├── src/
-│   ├── api.py           # FastAPI application logic
-│   └── predict.py       # Model loading and prediction function
+├── train_model.py           # Initial training script
+├── resume_training.py       # Script to resume training from checkpoints
+├── checkpoints/             # Directory containing model checkpoints
+│   ├── model_epoch_XX_val_acc_XX.h5   # Checkpoint files
+│   └── final_model.h5       # Final trained model
 │
-├── templates/
-│   ├── home.html        # The homepage
-│   ├── index.html       # The prediction page
-│   └── facts.json       # Fun facts for each fruit
+├── data/                    # Dataset directory
+│   └── Plants - Copy/       # Directory containing fruit images
+│       ├── apple/           # Subdirectories for each fruit category
+│       ├── banana/
+│       ├── grape/
+│       └── ...
 │
-├── Procfile             # Command to run the app on Heroku
-├── requirements.txt     # Python dependencies
-├── runtime.txt          # Python version for Heroku
-└── README.md            # This file
+└── README.md                # This file
 
 ## 📜 Version History (Heroku Releases)
 
@@ -116,4 +117,5 @@ The model was trained separately. The training repository contains scripts and d
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
 
