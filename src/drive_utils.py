@@ -1,12 +1,12 @@
 # src/drive_utils.py
 import os
 import json
-import mimetypes # ✅ 1. ADD THIS IMPORT
+import mimetypes
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
 
-PARENT_FOLDER_ID = os.environ.get('DRIVE_PARENT_FOLDER_ID', 'YOUR_MAIN_FOLDER_ID_HERE')
+PARENT_FOLDER_ID = os.environ.get('DRIVE_PARENT_FOLDER_ID') # No default value needed now
 FOLDER_ID_CACHE = {}
 
 def authenticate():
@@ -23,8 +23,13 @@ def find_or_create_folder(service, folder_name):
     if folder_name in FOLDER_ID_CACHE:
         return FOLDER_ID_CACHE[folder_name]
 
+    if not PARENT_FOLDER_ID:
+        raise ValueError("DRIVE_PARENT_FOLDER_ID environment variable not set.")
+
     query = f"name = '{folder_name}' and '{PARENT_FOLDER_ID}' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false"
-    response = service.files().list(q=query, spaces='drive', fields='files(id, name)').execute()
+    
+    # ✅ ADD supportsAllDrives=True TO THE SEARCH
+    response = service.files().list(q=query, spaces='drive', fields='files(id, name)', supportsAllDrives=True).execute()
     files = response.get('files', [])
 
     if files:
@@ -37,26 +42,31 @@ def find_or_create_folder(service, folder_name):
             'mimeType': 'application/vnd.google-apps.folder',
             'parents': [PARENT_FOLDER_ID]
         }
-        folder = service.files().create(body=file_metadata, fields='id').execute()
+        # ✅ ADD supportsAllDrives=True TO THE FOLDER CREATION
+        folder = service.files().create(body=file_metadata, fields='id', supportsAllDrives=True).execute()
         folder_id = folder.get('id')
         FOLDER_ID_CACHE[folder_name] = folder_id
         return folder_id
 
 def upload_image(service, image_path, image_filename, folder_id):
-    """Uploads an image file to a specific folder in Google Drive."""
     file_metadata = {
         'name': image_filename,
         'parents': [folder_id]
     }
     
-    # ✅ 2. THIS IS THE FIX - AUTOMATICALLY DETECT THE FILE TYPE
     mimetype, _ = mimetypes.guess_type(image_path)
-    if mimetype is None: # Default to a generic binary type if detection fails
+    if mimetype is None:
         mimetype = 'application/octet-stream'
 
     media = MediaFileUpload(image_path, mimetype=mimetype)
-    # ✅ --- END OF FIX ---
     
-    file = service.files().create(body=file_metadata, media_body=media, fields='id').execute()
+    # ✅ ADD supportsAllDrives=True TO THE FILE UPLOAD
+    file = service.files().create(
+        body=file_metadata, 
+        media_body=media, 
+        fields='id', 
+        supportsAllDrives=True
+    ).execute()
+
     print(f"File ID: {file.get('id')} uploaded successfully.")
     return file.get('id')
