@@ -8,23 +8,21 @@
     <style>
         body { font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; margin: 0; padding: 40px; color: #333; display: flex; flex-direction: column; align-items: center; min-height: 100vh; box-sizing: border-box; }
         .main-content { width: 100%; display: flex; flex-direction: column; align-items: center; margin-bottom: 40px; position: relative; max-width: 800px; }
-        .back-link { position: absolute; top: 0; left: 0; text-decoration: none; color: #4f46e5; font-weight: bold; }
+        .back-link { position: absolute; top: 10px; left: 10px; text-decoration: none; color: #4f46e5; font-weight: bold; font-size: 1rem; }
         .back-link:hover { text-decoration: underline; }
-        h1 { font-size: 2rem; margin-bottom: 10px; color: #222; }
-        p { margin-bottom: 30px; color: #555; }
-        .card { background: #fff; padding: 25px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 350px; text-align: center; }
+        h1 { font-size: 2.5rem; margin-bottom: 10px; color: #1a202c; }
+        p { margin-bottom: 30px; color: #4a5568; line-height: 1.7; font-size: 1.1rem; }
+        .card { background: #fff; padding: 35px; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 400px; text-align: center; box-sizing: border-box; }
         input[type="file"] { display: none; }
         .upload-label { display: inline-block; padding: 12px 25px; background: #4f46e5; color: white; border-radius: 8px; cursor: pointer; margin-bottom: 20px; transition: background 0.3s; }
-        .upload-label:hover { background: #3730a3; }
-        button { background: #10b981; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; transition: background 0.3s; }
+        button { background: #10b981; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; transition: background 0.3s; font-size: 16px; margin-top: 10px; }
         button:hover { background: #059669; }
-        #preview { margin: 15px 0; max-width: 200px; border-radius: 10px; display: none; }
-        .result { margin-top: 20px; text-align: left; }
-        .result h3 { margin-bottom: 10px; }
-        .prediction { padding: 8px 12px; background: #f3f4f6; border-radius: 6px; margin-bottom: 6px; }
+        #preview, #result-image { margin: 20px 0; max-width: 250px; max-height: 250px; border-radius: 10px; display: none; }
+        .result-page .card { text-align: center; }
+        .result-page h2 { font-size: 2.5rem; margin: 10px 0; color: #4f46e5; }
+        .result-page .probability { font-size: 1rem; color: #555; margin-bottom: 20px; }
+        .result-page .fun-fact { background: #f3f4f6; padding: 15px; border-radius: 8px; font-style: italic; color: #333; margin-top: 20px; }
         .footer { width: 100%; max-width: 800px; text-align: center; padding: 30px; background: #1a202c; color: #a0aec0; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
-        .footer h2 { color: #fff; margin-top: 0; }
-        .footer p { color: #a0aec0; }
         .social-links a { color: #fff; background: rgba(255, 255, 255, 0.1); margin: 0 10px; padding: 10px; border-radius: 50%; width: 24px; height: 24px; display: inline-flex; justify-content: center; align-items: center; text-decoration: none; transition: background 0.3s; }
         .social-links a:hover { background: #4f46e5; }
         .copyright { margin-top: 30px; font-size: 0.9rem; }
@@ -32,20 +30,30 @@
 </head>
 <body>
     <div class="main-content">
-        <a href="/" class="back-link">&larr; Return to Homepage</a>
-        <h1>🍎 Fruit Classifier</h1>
-        <p>Upload a fruit image to see predictions.</p>
+        <a href="/" class="back-link">&larr; Home</a>
 
-        <div class="card">
-            <form id="upload-form">
-                <label for="file" class="upload-label">Choose Image</label>
-                <input type="file" id="file" name="file" accept="image/*">
-                <br>
-                <img id="preview" />
-                <br>
-                <button type="submit">Predict</button>
-            </form>
-            <div class="result" id="result"></div>
+        <div id="upload-page" style="text-align: center;">
+            <h1>🍎 Fruit Classifier</h1>
+            <p>Upload a fruit image to get a fun fact!</p>
+            <div class="card">
+                <form id="upload-form">
+                    <label for="file" class="upload-label">Choose Image</label>
+                    <input type="file" id="file" name="file" accept="image/*">
+                    <br>
+                    <img id="preview" />
+                    <br>
+                    <button type="submit" id="predict-btn" style="display: none;">Predict</button>
+                </form>
+                <div id="loading-message" style="display: none;"><p>🧠 Analyzing your fruit...</p></div>
+            </div>
+        </div>
+
+        <div id="result-page" style="display: none; text-align: center;">
+            <h1>Prediction Result</h1>
+            <div class="card result-page">
+                <img id="result-image" />
+                <h2></h2> <p class="probability"></p> <div class="fun-fact"><p></p></div> <button id="reset-btn">Predict Another Fruit</button>
+            </div>
         </div>
     </div>
 
@@ -53,53 +61,93 @@
         <h2>Let's Connect</h2>
         <p>Feel free to explore my repositories and reach out if you'd like to collaborate.</p>
         <div class="social-links">
-            <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
-            <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
-            <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
-            <a href="#" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="https://twitter.com/thenafeesiqbal" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="https://instagram.com/thenafeesiqbal" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://linkedin.com/in/nafees-iqbal" target="_blank"><i class="fab fa-linkedin"></i></a>
+            <a href="https://github.com/inafees14" target="_blank"><i class="fab fa-github"></i></a>
         </div>
         <p class="copyright">© 2025 Nafees Iqbal | Built with 💻 & ❤️</p>
     </footer>
 
     <script>
-        // Your JavaScript remains exactly the same
+        // --- Get all the page elements ---
+        const uploadPage = document.getElementById("upload-page");
+        const resultPage = document.getElementById("result-page");
         const fileInput = document.getElementById("file");
         const preview = document.getElementById("preview");
         const form = document.getElementById("upload-form");
-        const resultDiv = document.getElementById("result");
+        const predictBtn = document.getElementById("predict-btn");
+        const loadingMessage = document.getElementById("loading-message");
+        const resetBtn = document.getElementById("reset-btn");
+        const resultImage = document.getElementById("result-image");
+        const resultHeader = document.querySelector("#result-page h2");
+        const resultProb = document.querySelector("#result-page .probability");
+        const resultFact = document.querySelector("#result-page .fun-fact p");
 
+        let allFacts = {};
+
+        // --- CORRECTED: Load Fun Facts on page load ---
+        document.addEventListener("DOMContentLoaded", async () => {
+            try {
+                const response = await fetch("/facts");
+                allFacts = await response.json();
+            } catch (error) {
+                console.error("Could not load fun facts:", error);
+                allFacts = { "default": ["Could not load fun facts, but I hope you enjoy the prediction!"] };
+            }
+        });
+
+        // --- Show preview when a file is chosen ---
         fileInput.addEventListener("change", () => {
             const file = fileInput.files[0];
             if (file) {
                 preview.src = URL.createObjectURL(file);
                 preview.style.display = "block";
+                predictBtn.style.display = "inline-block";
             }
         });
 
+        // --- Handle the form submission to get a prediction ---
         form.addEventListener("submit", async (e) => {
             e.preventDefault();
             const file = fileInput.files[0];
-            if (!file) {
-                alert("Please choose an image first!");
-                return;
-            }
+            if (!file) { alert("Please choose an image first!"); return; }
+
+            predictBtn.style.display = "none";
+            loadingMessage.style.display = "block";
+
             const formData = new FormData();
             formData.append("file", file);
-            resultDiv.innerHTML = "<p>Loading...</p>";
-            const response = await fetch("/predict/", {
-                method: "POST",
-                body: formData,
-            });
+
+            const response = await fetch("/predict/", { method: "POST", body: formData });
             const data = await response.json();
-            resultDiv.innerHTML = `
-                <h3>Predictions:</h3>
-                ${data.predictions
-                    .map(
-                        (p) =>
-                            `<div class="prediction"><strong>${p.class}</strong>: ${Number(p.probability).toFixed(2)}%</div>`
-                    )
-                    .join("")}
-            `;
+
+            // --- NEW: Logic to show only the top prediction and a fun fact ---
+            const topPrediction = data.predictions[0];
+            const fruitName = topPrediction.class;
+            const probability = topPrediction.probability;
+            const factsForFruit = allFacts[fruitName] || allFacts["default"];
+            const randomFact = factsForFruit[Math.floor(Math.random() * factsForFruit.length)];
+
+            // --- Populate and show the result page ---
+            resultImage.src = URL.createObjectURL(file);
+            resultImage.style.display = "block";
+            resultHeader.innerText = fruitName;
+            resultProb.innerText = `Confidence: ${Number(probability).toFixed(2)}%`;
+            resultFact.innerText = randomFact;
+            
+            uploadPage.style.display = "none";
+            resultPage.style.display = "block";
+        });
+
+        // --- Handle the "Predict Another" button ---
+        resetBtn.addEventListener("click", () => {
+            resultPage.style.display = "none";
+            uploadPage.style.display = "block";
+            form.reset();
+            preview.style.display = "none";
+            predictBtn.style.display = "none";
+            loadingMessage.style.display = "none";
         });
     </script>
 </body>

@@ -3,8 +3,8 @@ from fastapi import FastAPI, UploadFile, File
 import shutil
 import os
 from .predict import predict_image
-from fastapi.templating import Jinja2Templates  # ✅ add this import
-from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates 
+from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.requests import Request
 
 app = FastAPI()
@@ -34,7 +34,11 @@ async def predict(file: UploadFile = File(...)):
             {"class": cls, "probability": prob} for cls, prob in predictions
         ]
     }
-
+@app.get("/facts", response_class=FileResponse)
+async def get_facts():
+    """Serves the facts.json file."""
+    return "templates/facts.json"
+    
 # -----------------------
 # Serve frontend (index.html)
 # -----------------------
