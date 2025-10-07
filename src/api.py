@@ -40,7 +40,7 @@ async def predict(file: UploadFile = File(...)):
     predictions, _ = predict_image(file_path)
 
     # 3. Determine the final prediction and folder name
-    CONFIDENCE_THRESHOLD = 70.0
+    CONFIDENCE_THRESHOLD = 60.0
     final_predictions = []
     predicted_class_for_upload = "Unknown"  # Default folder name
 
