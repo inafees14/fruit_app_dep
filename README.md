@@ -53,22 +53,38 @@ The primary goal is to develop an accurate and lightweight fruit classification 
 
 ## 📂 Web App Project Structure
 
-fruit-classification/
-│
-├── train_model.py           # Initial training script
-├── resume_training.py       # Script to resume training from checkpoints
-├── checkpoints/             # Directory containing model checkpoints
-│   ├── model_epoch_XX_val_acc_XX.h5   # Checkpoint files
-│   └── final_model.h5       # Final trained model
-│
-├── data/                    # Dataset directory
-│   └── Plants - Copy/       # Directory containing fruit images
-│       ├── apple/           # Subdirectories for each fruit category
-│       ├── banana/
-│       ├── grape/
-│       └── ...
-│
-└── README.md                # This file
+fruit_app_dep/
+├── .git/
+├── checkpoints/
+├── data/
+├── epochs/
+├── notebooks/
+│   └── EDA_and_Augmentation.ipynb
+├── src/
+│   ├── __init__.py
+│   ├── api.py
+│   ├── data_analysis.py
+│   ├── evaluate.py
+│   ├── predict.py
+│   ├── train.py
+│   └── utils.py
+├── templates/
+│   ├── facts.json
+│   ├── home.html
+│   └── index.html
+├── tests/
+│   └── test_utils.py
+├── uploads/
+├── .gitignore
+├── .python-version
+├── .slugignore
+├── Procfile
+├── README.md
+├── class_names.py
+├── class_names.txt
+├── convert_model.py
+├── predictions.png
+├── requirements.txt
 
 ## 📜 Version History (Heroku Releases)
 
@@ -117,5 +133,6 @@ The model was trained separately. The training repository contains scripts and d
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
 
 
