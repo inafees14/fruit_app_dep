@@ -12,7 +12,7 @@ This project is a complete deep learning application that classifies images of v
 
 The application is live and ready to use! Click the link below to try it out.
 
-**[➡️ Launch Fruit Classifier App]((https://fruit-classification-1-7c2a30615392.herokuapp.com/)**
+**[➡️ Launch Fruit Classifier App](https://fruit-classification-1-7c2a30615392.herokuapp.com/)**
 
 ## 📸 Application Screenshots
 
@@ -52,3 +52,4 @@ The application is live and ready to use! Click the link below to try it out.
 The primary goal is to develop an accurate and lightweight fruit classification system that can run efficiently. MobileNetV2 was specifically chosen as the backbone architecture because of its efficiency on resource-constrained devices, small size, and suitability for transfer learning. This has several practical applications in mobile apps, agricultural tech, and educational tools.
 
 ## 📂 Web App Project Structure
+
