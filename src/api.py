@@ -6,9 +6,9 @@ from fastapi.templating import Jinja2Templates
 import os
 import shutil
 from .predict import predict_image
-from . import drive_utils
+# The 'drive_utils' import has been removed
 
-# Configure logging
+# Configure basic logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 app = FastAPI()
@@ -39,34 +39,21 @@ async def predict(file: UploadFile = File(...)):
     # 2. Run prediction
     predictions, _ = predict_image(file_path)
 
-    # 3. Determine the final prediction and folder name
+    # 3. Determine the final prediction
     CONFIDENCE_THRESHOLD = 60.0
     final_predictions = []
-    predicted_class_for_upload = "Unknown"  # Default folder name
-
+    
     if predictions:
         top_class, top_prob = predictions[0]
         if top_prob < CONFIDENCE_THRESHOLD:
             final_predictions.append({"class": "Not a Fruit!", "probability": top_prob})
-            # The folder will remain "Unknown"
         else:
             final_predictions.append({"class": top_class, "probability": top_prob})
-            predicted_class_for_upload = top_class # Set folder name to the predicted class
 
-    # 4. Upload to Google Drive (BEFORE deleting the file and returning)
-    try:
-        service = drive_utils.authenticate()
-        dest_folder_id = drive_utils.find_or_create_folder(service, predicted_class_for_upload)
-        drive_utils.upload_image(service, file_path, file.filename, dest_folder_id)
-        logging.info(f"Successfully uploaded {file.filename} to Google Drive folder '{predicted_class_for_upload}'.")
-    except Exception as e:
-        # This will now show the detailed error in your Heroku logs
-        logging.error(f"Failed to upload to Google Drive. Reason: {e}", exc_info=True)
-
-    # 5. Clean up (delete) the local file
+    # 4. Clean up the local file
     os.remove(file_path)
 
-    # 6. Return the JSON response to the user (this is the LAST step)
+    # 5. Return the JSON response to the user
     return {
         "filename": file.filename,
         "predictions": final_predictions

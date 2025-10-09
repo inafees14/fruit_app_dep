@@ -5,6 +5,3 @@ tflite-runtime
 numpy<2
 Pillow
 Jinja2
-google-api-python-client
-google-auth-httplib2
-google-auth-oauthlib
