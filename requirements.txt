@@ -7,3 +7,4 @@ Pillow
 Jinja2
 SQLAlchemy==1.4.41
 psycopg2-binary
+cloudinary
