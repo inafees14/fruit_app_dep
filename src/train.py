@@ -11,7 +11,7 @@ import pickle
 # -------------------------------
 # Paths
 # -------------------------------
-DATA_DIR = "E:/Desktop/Plants - Copy"   # Change this to your dataset path
+DATA_DIR = "E:/Desktop/Plants - Copy"
 CHECKPOINT_DIR = "checkpoints"
 os.makedirs(CHECKPOINT_DIR, exist_ok=True)
 
