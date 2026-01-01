@@ -7,7 +7,7 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from src.utils import load_trained_model, load_class_names, preprocess_image
 
 # Paths
-DATA_DIR = "E:/Desktop/Plants - Copy"
+DATA_DIR = "E:/Desktop/Fruits"
 MODEL_PATH = os.path.join("checkpoints", "final_model.h5")
 
 # Load model
