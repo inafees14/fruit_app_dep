@@ -1,5 +1,11 @@
 __pycache__/
 *.pyc
 *.pkl
+*.ipynb
+*.h5
+*.pt
+*.log
+.env
 data/
 epochs/
+notebooks/
