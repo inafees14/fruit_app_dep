@@ -1,4 +1,7 @@
 __pycache__/
+data/
+epochs/
+notebooks/
 *.pyc
 *.pkl
 *.ipynb
@@ -6,6 +9,3 @@ __pycache__/
 *.pt
 *.log
 .env
-data/
-epochs/
-notebooks/

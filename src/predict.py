@@ -3,16 +3,21 @@ import os
 # from src.utils import load_trained_model, load_class_names, preprocess_image # ❌ REMOVED - We will define functions here
 import numpy as np # ✅ ADDED
 from PIL import Image # ✅ ADDED
-import tflite_runtime.interpreter as tflite
+#import tflite_runtime.interpreter as tflite
+import tensorflow as tf
 
 # --- Configuration (✅ CHANGED) ---
 MODEL_PATH = os.path.join("checkpoints", "model.tflite") # ✅ Use the new .tflite model
+print("MODEL EXISTS:", os.path.exists(MODEL_PATH))
+print("MODEL PATH:", os.path.abspath(MODEL_PATH))
 DATA_DIR = "data" # This can be a relative path now
 CLASS_NAMES_PATH = "class_names.txt" # ✅ We will use a simple text file
 
 # --- Load Model and Class Names (✅ CHANGED) ---
 try:
-    interpreter = tflite.Interpreter(model_path=MODEL_PATH)
+    #interpreter = tflite.Interpreter(model_path=MODEL_PATH)
+    interpreter = tf.lite.Interpreter(model_path=MODEL_PATH)
+
     interpreter.allocate_tensors()
     input_details = interpreter.get_input_details()
     output_details = interpreter.get_output_details()
@@ -25,17 +30,16 @@ except Exception as e:
     interpreter = None
     class_names = []
 
-
 # --- Preprocessing Function (✅ ADDED) ---
-def preprocess_image(image_path, target_size=(224, 224)):
-    """Loads and preprocesses an image file for the model."""
-    img = Image.open(image_path).convert('RGB')
-    img = img.resize(target_size)
-    img_array = np.array(img, dtype=np.float32)
-    img_array = np.expand_dims(img_array, axis=0)
-    img_array /= 255.0  # Normalize to [0,1]
-    return img_array, img # Return original PIL image for display if needed
+from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
 
+def preprocess_image(image_path, target_size=(224, 224)):
+    img = Image.open(image_path).convert("RGB")
+    img = img.resize(target_size)
+    x = np.array(img, dtype=np.float32)
+    x = np.expand_dims(x, axis=0)
+    x = preprocess_input(x)
+    return x, img
 
 def predict_image(img_path, top_k=3):
     """Predict top-k classes for a single image using TFLite model."""

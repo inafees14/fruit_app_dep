@@ -1,4 +1,3 @@
-Strawberry
 apple
 banana
 cantaloupe
@@ -8,4 +7,5 @@ kiwifruit
 mango
 orange
 pineapple
+strawberry
 watermelon
