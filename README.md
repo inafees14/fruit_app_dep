@@ -51,41 +51,6 @@ The application is live and ready to use! Click the link below to try it out.
 
 The primary goal is to develop an accurate and lightweight fruit classification system that can run efficiently. MobileNetV2 was specifically chosen as the backbone architecture because of its efficiency on resource-constrained devices, small size, and suitability for transfer learning. This has several practical applications in mobile apps, agricultural tech, and educational tools.
 
-## 📂 Web App Project Structure
-```bash
-fruit_app_dep/
-├── .git/
-├── checkpoints/
-├── data/
-├── epochs/
-├── notebooks/
-│   └── EDA_and_Augmentation.ipynb
-├── src/
-│   ├── __init__.py
-│   ├── api.py
-│   ├── data_analysis.py
-│   ├── evaluate.py
-│   ├── predict.py
-│   ├── train.py
-│   └── utils.py
-├── templates/
-│   ├── facts.json
-│   ├── home.html
-│   └── index.html
-├── tests/
-│   └── test_utils.py
-├── uploads/
-├── .gitignore
-├── .python-version
-├── .slugignore
-├── Procfile
-├── README.md
-├── class_names.py
-├── class_names.txt
-├── convert_model.py
-├── predictions.png
-├── requirements.txt
-```
 ## 📜 Version History (Heroku Releases)
 
 This table highlights the key milestones of the deployment.
@@ -223,6 +188,7 @@ Fixed a critical Git bloat issue where the history reached 1.1GB due to large mo
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
 
 
 
