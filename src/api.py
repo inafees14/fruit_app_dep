@@ -8,16 +8,16 @@ import shutil
 import datetime
 from .predict import predict_image
 
-# ✅ Add Cloudinary imports
+# Add Cloudinary imports
 import cloudinary
 import cloudinary.uploader
 
-# ✅ Add SQLAlchemy imports for the database
+# Add SQLAlchemy imports for the database
 from sqlalchemy import create_engine, Column, Integer, String, Float, DateTime
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
-# --- ✅ CLOUDINARY CONFIGURATION ---
+# --- CLOUDINARY CONFIGURATION ---
 # Reads your secret keys from Heroku Config Vars
 cloudinary.config(
     cloud_name = os.environ.get('CLOUDINARY_CLOUD_NAME'),
@@ -27,7 +27,7 @@ cloudinary.config(
 )
 # --- END CLOUDINARY CONFIGURATION ---
 
-# --- ✅ DATABASE SETUP ---
+# --- DATABASE SETUP ---
 DATABASE_URL = os.environ.get('DATABASE_URL')
 if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
     DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
@@ -44,7 +44,7 @@ class PredictionLog(Base):
     predicted_class = Column(String)
     confidence = Column(Float)
     is_fruit = Column(String)
-    # ✅ Add new columns to link to the uploaded image
+    # Added new columns to link to the uploaded image
     cloudinary_id = Column(String, nullable=True)
     cloudinary_url = Column(String, nullable=True)
 
