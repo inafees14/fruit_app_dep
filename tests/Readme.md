@@ -1,5 +1,4 @@
-🍎 Robust Image Classification for Edge AI
-
+Robust Image Classification for Edge AI
 From Statistical Validation to Hardware-Constrained Deployment
 
 
@@ -13,154 +12,155 @@ From Statistical Validation to Hardware-Constrained Deployment
 
 ---
 
-1. Overview
+Overview
 
-This repository presents a production-grade image classification system engineered for resource-constrained edge environments.
+This project presents a production-oriented image classification system engineered for resource-constrained edge environments.
 
-The objective was not to maximize notebook accuracy, but to design a system that:
+Rather than optimizing purely for notebook accuracy, this system was designed around:
 
-Maintains statistical reliability across seeds
+Statistical reliability across seeds
 
-Achieves low-latency inference on constrained hardware
+Low-latency deterministic inference
 
-Uses a minimal runtime footprint
+Minimal runtime footprint
 
-Survives real-world deployment constraints (memory limits, cold starts, CI/CD constraints)
+Deployment stability under memory limits
+
+Confidence-aware prediction behavior
 
 
-The final deployed system runs a fine-tuned MobileNetV2 model through a pure TensorFlow Lite runtime stack, served via FastAPI and deployed on Heroku.
+The final production stack runs a fine-tuned MobileNetV2 model converted to TensorFlow Lite, served through FastAPI, and deployed on Heroku using a lightweight runtime environment.
 
 
 ---
 
-2. Problem Framing
+Problem Framing
 
-Standard academic pipelines optimize for validation accuracy.
-Edge systems optimize for:
+Academic pipelines typically optimize validation accuracy.
 
-Deterministic latency
+Edge systems require optimization across:
+
+Inference latency
 
 Memory ceiling constraints
 
 Binary size
 
-Runtime stability
+Cold-start behavior
 
-Predictive confidence calibration
+Confidence calibration
 
 
 This project explicitly models the accuracy–latency–footprint trade-off.
 
-Dataset scale:
-~31,000 curated images across 11 fruit classes.
+Dataset size: ~31,000 curated images across 11 fruit classes.
 
 
 ---
 
-3. Architecture Selection: Measured Trade-offs
+Model Benchmarking
 
-Three architectures were evaluated under identical training conditions.
+Three architectural approaches were evaluated under identical training protocols.
 
-Model	Fine-Tuned Accuracy	TFLite Latency	Model Size	Edge Suitability
+Model	Fine-Tuned Accuracy	TFLite Latency	Deployment Suitability
 
-Custom CNN	74%	—	Small	High variance
-EfficientNetB0	95%	40 ms	Heavy	Moderate
-MobileNetV2	94%	19 ms	Compact	Selected
-
-
-Decision Rationale
-
-Although EfficientNetB0 achieved marginally higher accuracy, MobileNetV2:
-
-Delivered >2× faster inference
-
-Reduced memory overhead
-
-Maintained strong macro-F1 stability
-
-Showed superior generalization consistency across seeds
+Custom CNN	74%	—	High variance
+EfficientNetB0	95%	40 ms	Moderate
+MobileNetV2	94%	19 ms	Selected
 
 
-A 1% accuracy sacrifice yielded a significant improvement in deployment viability.
+Architectural Decision
+
+EfficientNetB0 achieved the highest accuracy (95%).
+However, MobileNetV2 achieved comparable accuracy (94%) while delivering more than 2× faster inference.
+
+The 1% drop in accuracy was deliberately traded for:
+
+Lower memory usage
+
+Reduced latency
+
+Improved edge stability
+
+Smaller deployment footprint
+
 
 
 ---
 
-4. Edge Validation: Physical Device Testing
+Edge Hardware Validation
 
-All benchmarking was repeated on a physical Raspberry Pi 3 Model B running headless Linux.
+The selected MobileNetV2 model was deployed and stress-tested on a headless Raspberry Pi 3 running Linux.
 
 Observed Results
 
-Stable inference latency: ~24 ms
+Stable average inference latency: ~24 ms
 
-Minimal frame-to-frame jitter
+Minimal prediction jitter
 
-Sustained accuracy: 84–86% across physical test cycles
+Sustained physical accuracy: 84–86%
 
-Per-class precision/recall validated via confusion matrices
+Verified via confusion matrices and per-class precision/recall
 
 
-Quantization and runtime isolation ensured deterministic behavior under constrained CPU conditions.
+Hardware-specific quantization significantly improved runtime determinism.
 
 
 ---
 
-5. Production Stack Design
+Production Engineering
 
-5.1 Dependency-Free Inference
+1. Dependency-Free Inference Stack
 
 Training and deployment environments were strictly separated.
 
-Training Stack
+Training Environment
 
-Full TensorFlow
+Full TensorFlow stack
 
 Data augmentation
 
-Seed-controlled experiments
+Multi-seed experiments
 
 
-Deployment Stack
+Deployment Environment
 
-.h5 → FP16-quantized .tflite
+FP16-quantized .tflite model
 
 tflite-runtime (<10MB)
 
+FastAPI + Uvicorn
+
 No TensorFlow dependency
 
-Uvicorn + FastAPI
 
-
-This eliminated:
+This prevented:
 
 Heroku memory crashes
 
-Cold-start latency spikes
+Cold-start lag
 
-Excess container size
+Large container builds
 
 
 
 ---
 
-5.2 Confidence-Aware Guardrails
+2. Confidence-Aware Guardrails
 
-Implemented calibrated probability thresholding:
+A calibrated probability threshold (70%) was implemented.
 
-< 70% confidence → flagged as unknown
+Predictions below threshold → flagged as unknown
 
 Prevents forced misclassification
 
-Improves real-world trustworthiness
+Improves real-world reliability
 
-
-This transforms the system from a naive classifier into a confidence-aware inference service.
 
 
 ---
 
-5.3 Telemetry & Monitoring
+3. Telemetry & Logging
 
 Integrated:
 
@@ -168,75 +168,66 @@ PostgreSQL for prediction logging
 
 Cloudinary for image storage
 
-Structured metadata capture (confidence, timestamp, label)
+Structured metadata (confidence, timestamp, label)
 
 
-Enables:
+This enables:
 
 Misclassification analysis
 
 Drift inspection
 
-Active learning loop preparation
+Future active learning integration
 
 
 
 ---
 
-5.4 Repository Engineering
+4. Repository Optimization
 
-Resolved severe Git history bloat (1.1GB) caused by large model binaries.
+The repository originally suffered from Git history bloat (1.1GB) due to model binaries.
 
-Actions:
-
-Aggressive .gitignore
+Mitigation steps:
 
 History rewriting
 
-Binary decoupling from training repo
+Strict .gitignore policies
+
+Binary separation from training repo
 
 
-Final production repository footprint: ~15MB
+Final production repository size: ~15MB.
 
-This ensures:
-
-Clean CI/CD
-
-Fast cloning
-
-Stable deployment cycles
-
+This ensures clean CI/CD and stable deployments.
 
 
 ---
 
-6. Explainability Audit
+Explainability
 
-Used Input-Gradient CAM for architectural comparison.
+Input-Gradient Class Activation Mapping (CAM) was used to validate learned representations.
 
 Findings:
 
-MobileNetV2 focused on fruit texture and geometry
+MobileNetV2 focused on fruit texture and structural regions
 
-Baseline CNN exhibited background leakage
+Baseline CNN showed background leakage
 
-Explainability supported deployment decision
+Explainability analysis supported architectural selection
 
-
-The selected architecture demonstrated biologically meaningful feature extraction.
 
 
 ---
 
-7. System Capabilities
+Application Features
 
 11 fruit classes
 
-Confidence-aware unknown detection
+Confidence-based unknown detection
 
-REST API architecture
+RESTful API architecture
 
-Responsive minimal frontend
+Responsive frontend (HTML5 / CSS3 / JavaScript)
 
 Edge-ready inference engine
 
@@ -246,11 +237,19 @@ Production telemetry logging
 
 ---
 
-8. Local Execution
+Local Development
 
-git clone <repo-url>
+Clone the repository:
+
+git clone <your-repo-url>
 cd fruit-classification-app
+
+Install dependencies:
+
 pip install -r requirements.txt
+
+Run the server:
+
 uvicorn main:app --reload
 
 Access:
@@ -260,65 +259,48 @@ http://127.0.0.1:8000
 
 ---
 
-9. Version Milestones
+Version History
 
-Version	Date	Engineering Milestone
+Version	Date	Key Engineering Milestone
 
 v38	2026-01-03	Finalized edge-optimized deployment pipeline
 v29	2025-10-10	Integrated Cloudinary production image storage
 v24	2025-10-07	Provisioned PostgreSQL telemetry logging
-v13	2025-10-07	Implemented calibrated unknown-image threshold
+v13	2025-10-07	Implemented calibrated unknown threshold
 v1	2025-10-01	Initial inference deployment
 
 
 
 ---
 
-10. Future Directions
+Future Roadmap
 
 Quantization-Aware Training (QAT)
 
-Real-time video stream inference
+Real-time video inference
 
-Automated active learning ingestion
+Automated active learning loop
 
-Edge hardware benchmarking across ARM variants
-
-
-
----
-
-11. Project Positioning
-
-This is not a template-based classifier demo.
-
-It is a controlled study in deployment-aware model design, integrating:
-
-Statistical rigor
-
-Edge hardware validation
-
-Runtime minimization
-
-MLOps discipline
-
-
-It demonstrates the full pipeline:
-
-> Research → Calibration → Quantization → Hardware Validation → Production Deployment
-
+Benchmarking across ARM hardware variants
 
 
 
 ---
 
-If you'd like, I can now:
+License
 
-🔹 Refine it further for a research-lab audience (more formal tone)
-
-🔹 Optimize it for recruiters (impact-focused)
-
-🔹 Or compress it into a one-page high-density README
+MIT License.
 
 
-Tell me the target audience.
+---
+
+If you want, I can now:
+
+Make a short elite recruiter version (very sharp, 60% shorter)
+
+Or make a research-lab formal version (more mathematical framing)
+
+Or help you align this with your M.Sc Data Science positioning**
+
+
+Just tell me which audience this README is targeting.
