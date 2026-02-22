@@ -188,9 +188,3 @@ Fixed a critical Git bloat issue where the history reached 1.1GB due to large mo
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
-
-
-
-
-
