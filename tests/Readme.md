@@ -200,7 +200,7 @@ http://127.0.0.1:8000
 
 ---
 
-# 📜 Version History
+# Version History
 
 | Version | Date | Engineering Milestone |
 |----------|------------|----------------------------|
@@ -214,7 +214,7 @@ http://127.0.0.1:8000
 
 ---
 
-# 🛣️ Future Roadmap
+# Future Roadmap
 
 - Quantization-Aware Training (QAT)  
 - Real-time Video Inference  
@@ -223,6 +223,6 @@ http://127.0.0.1:8000
 
 ---
 
-# 📄 License
+# License
 
 MIT License
