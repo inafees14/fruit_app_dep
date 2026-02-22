@@ -1,5 +1,4 @@
-# 🍎 Fruit Image Classification System (V2)
-## Robust Image Classification for Edge AI  
+# Robust Image Classification for Edge AI  
 ### Research → Edge Validation → Production
 
 [![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python&logoColor=white)](https://www.python.org/)
@@ -12,7 +11,7 @@
 
 ---
 
-## 📌 Overview
+## Overview
 
 This project is a deployment-aware fruit classification system engineered for real-world edge and cloud-constrained environments.
 
@@ -31,9 +30,9 @@ The final production model is a fine-tuned **MobileNetV2**, converted to **FP16 
 
 ---
 
-# 🏗️ Experimental Pipeline & Research
+# Experimental Pipeline & Research
 
-## 1️⃣ Model Benchmarking
+## Model Benchmarking
 
 | Model | Input Dim | Strategy | Strength | Role |
 |--------|-----------|-----------|-----------|-----------|
@@ -43,7 +42,7 @@ The final production model is a fine-tuned **MobileNetV2**, converted to **FP16 
 
 ---
 
-## 2️⃣ Statistical Performance (Test Set)
+## Statistical Performance (Test Set)
 
 Evaluated on ~31,000 images across 11 classes using **Macro-F1**.
 
@@ -58,7 +57,7 @@ MobileNetV2 was selected because it significantly outperformed the CNN (p < 0.05
 
 ---
 
-## 3️⃣ Explainability & Robustness
+## Explainability & Robustness
 
 Input-Gradient Class Activation Mapping (CAM) was used to validate model focus.
 
@@ -70,7 +69,7 @@ Findings:
 
 ---
 
-# 📱 Edge Hardware Validation
+# Edge Hardware Validation
 
 The selected MobileNetV2 model was stress-tested on a headless Raspberry Pi 3 (Linux, CPU-only).
 
@@ -85,9 +84,9 @@ Quantization significantly improved runtime determinism.
 
 ---
 
-# 🛠️ Production Engineering
+# Production Engineering
 
-## 🔹 The “No-TensorFlow” Inference Stack
+## The “No-TensorFlow” Inference Stack
 
 To prevent Heroku memory crashes and cold-start lag:
 
@@ -98,7 +97,7 @@ To prevent Heroku memory crashes and cold-start lag:
 
 ---
 
-## 🔹 Confidence-Aware Threshold
+## Confidence-Aware Threshold
 
 A calibrated **70% probability threshold** was implemented.
 
@@ -106,7 +105,7 @@ Predictions below threshold are flagged as **Unknown**, preventing forced miscla
 
 ---
 
-## 🔹 Telemetry & Logging
+## Telemetry & Logging
 
 Integrated:
 
@@ -122,7 +121,7 @@ Enables:
 
 ---
 
-## 🔹 Repository Optimization
+## Repository Optimization
 
 The repository previously reached 1.1GB due to historical model binaries.
 
@@ -136,7 +135,7 @@ Final production repository size: ~15MB.
 
 ---
 
-# ✨ Application Features
+# Application Features
 
 - 11 Fruit Classes  
 - Confidence-based Unknown Detection  
@@ -147,19 +146,19 @@ Final production repository size: ~15MB.
 
 ---
 
-# 🚀 Live Demo
+# Live Demo
 
-➡️ Launch Fruit Classifier App  
-(Add your Heroku URL here)
+ Launch Fruit Classifier App  
+https://fruit-classification-1-7c2a30615392.herokuapp.com/
 
 ---
 
-# 🧪 Local Development Setup
+# Local Development Setup
 
 Clone the repository:
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/inafees14/Fruits_classification
 cd fruit_app_dep
 ```
 
