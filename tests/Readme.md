@@ -40,11 +40,10 @@ The final production model is a fine-tuned **MobileNetV2**, converted to **FP16 
 | MobileNetV2 | 224x224 | Fine-tuned | High Accuracy / Speed | Deployment Candidate |
 | EfficientNetB0 | 224x224 | Fine-tuned | Feature Richness | Benchmark |
 
----
 
 ## Statistical Performance (Test Set)
 
-Evaluated on ~31,000 images across 11 classes using **Macro-F1**.
+Evaluated on images across 11 classes using **Macro-F1**.
 
 | Model | Accuracy (Mean) | Macro-F1 | Inference Stability |
 |--------|----------------|-----------|--------------------|
@@ -185,17 +184,13 @@ http://127.0.0.1:8000
 # 📂 Project Structure
 
 ```bash
-├── research-repo/
-│   ├── notebooks/
-│   ├── statistical_analysis/
-│   └── xai/
-│
-└── deployment-repo/
-    ├── main.py
-    ├── model/
-    │   └── model.tflite
-    ├── class_names.txt
-    └── requirements.txt
+├── research-repo/          # Training notebooks, Statistical analysis, XAI
+└── deployment-repo/        # Production code
+    ├── main.py             # FastAPI Backend
+    ├── model/              # Optimized .tflite model
+    ├── class_names.txt     # Strict index-to-label mapping
+    └── requirements.txt    # Lean dependency list (No TF!)
+
 ```
 
 ---
