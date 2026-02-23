@@ -28,7 +28,6 @@ Dataset size: ~31,000 curated images across 11 fruit classes.
 
 The final production model is a fine-tuned **MobileNetV2**, converted to **FP16 TensorFlow Lite**, served via **FastAPI**, and deployed on **Heroku** with a lean runtime stack.
 
----
 
 # Experimental Pipeline & Research
 
@@ -48,13 +47,12 @@ Evaluated on images across 11 classes using **Macro-F1**.
 | Model | Accuracy (Mean) | Macro-F1 | Inference Stability |
 |--------|----------------|-----------|--------------------|
 | Custom CNN | 74.2% | 0.734 | High Variance |
-| MobileNetV2 | 89.1% | 0.885 | High Stability |
-| EfficientNetB0 | 85.3% | 0.849 | Moderate (Heavy) |
+| MobileNetV2 | 93.87% | 0.9311 | High Stability |
+| EfficientNetB0 | 95.3% | 0.9627 | Moderate (Heavy) |
 
 **Insight:**  
 MobileNetV2 was selected because it significantly outperformed the CNN (p < 0.05) while maintaining a lower memory footprint than EfficientNet.
 
----
 
 ## Explainability & Robustness
 
@@ -66,7 +64,6 @@ Findings:
 - Custom CNN showed background bias  
 - Explainability supported deployment decision  
 
----
 
 # Edge Hardware Validation
 
@@ -81,7 +78,6 @@ The selected MobileNetV2 model was stress-tested on a headless Raspberry Pi 3 (L
 
 Quantization significantly improved runtime determinism.
 
----
 
 # Production Engineering
 
@@ -94,7 +90,6 @@ To prevent Heroku memory crashes and cold-start lag:
 - Backend: FastAPI + Uvicorn  
 - Strict training/deployment separation  
 
----
 
 ## Confidence-Aware Threshold
 
@@ -102,7 +97,6 @@ A calibrated **70% probability threshold** was implemented.
 
 Predictions below threshold are flagged as **Unknown**, preventing forced misclassification.
 
----
 
 ## Telemetry & Logging
 
@@ -118,8 +112,6 @@ Enables:
 - Drift monitoring  
 - Future active learning  
 
----
-
 ## Repository Optimization
 
 The repository previously reached 1.1GB due to historical model binaries.
@@ -132,7 +124,6 @@ Actions:
 
 Final production repository size: ~15MB.
 
----
 
 # Application Features
 
@@ -143,14 +134,11 @@ Final production repository size: ~15MB.
 - Edge-Compatible Runtime  
 - Production Telemetry Logging  
 
----
-
 # Live Demo
 
  Launch Fruit Classifier App  
 https://fruit-classification-1-7c2a30615392.herokuapp.com/
 
----
 
 # Local Development Setup
 
@@ -179,7 +167,6 @@ Open your browser and navigate to:
 http://127.0.0.1:8000
 ```
 
----
 
 # 📂 Project Structure
 
@@ -190,10 +177,9 @@ http://127.0.0.1:8000
     ├── model/              # Optimized .tflite model
     ├── class_names.txt     # Strict index-to-label mapping
     └── requirements.txt    # Lean dependency list (No TF!)
-
 ```
 
----
+
 
 # Version History
 
@@ -207,7 +193,7 @@ http://127.0.0.1:8000
 | v8 | 2025-10-02 | Two-page UI deployment |
 | v1 | 2025-10-01 | Initial inference release |
 
----
+
 
 # Future Roadmap
 
